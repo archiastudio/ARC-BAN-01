@@ -4,11 +4,19 @@
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>ADD POST</title>
+    <title>Admin - DTYashPal</title>
+    <link rel="icon" href="wp-content/uploads/sites/365/2023/04/favicon.png" sizes="32x32">
+    <link rel="icon" href="wp-content/uploads/sites/365/2023/04/favicon.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="wp-content/uploads/sites/365/2023/04/favicon.png">
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
     <style>
+        @font-face {
+            font-family: cutta;
+            src: url("wp-content/fonts/cutta-extrabold.otf") format("opentype");
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -29,10 +37,11 @@
         }
 
         body {
-            color: #000;
+            font-family: cutta;
+            color: #fff2d2;
             overflow-x: hidden;
             height: 100%;
-            background: url("https://i.pinimg.com/736x/ad/26/60/ad2660afb68666dd137afb32b5b5125f.jpg")no-repeat center center fixed;
+            background: url("wp-content/8.png")no-repeat center center fixed;
             -webkit-background-size: cover;
             -moz-background-size: cover;
             -o-background-size: cover;
@@ -40,13 +49,13 @@
         }
 
         .card {
-            background-color: #ffffff54;
+            background-color: #00000069;
             padding: 30px 40px;
             margin-top: 60px;
             margin-bottom: 60px;
             border: none !important;
             box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(2px);
         }
 
         .blue-text {
@@ -74,7 +83,7 @@
             -moz-box-shadow: none !important;
             -webkit-box-shadow: none !important;
             box-shadow: none !important;
-            border: 1px solid #00BCD4;
+            border: 1px solid #977e00;
             outline-width: 0;
             font-weight: 400
         }
@@ -97,6 +106,15 @@
             box-shadow: none !important;
             outline-width: 0
         }
+
+        a{
+            color: #fff2d2;
+            transition: 0.3s;
+        }
+
+        a:hover{
+            color: #ffda7e;
+        }
     </style>
 </head>
 
@@ -115,23 +133,27 @@
                     <div class="form-card" id="form">
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex"> <label
-                                    class="form-control-label px-3">Image Url<span class="text-danger">
+                                    class="form-control-label px-3">Image<span class="text-danger">
                                         *</span></label> <input type="file" accept="image/*" id="picture"
                                     name="picture"> </div>
                             <div class="form-group col-sm-6 flex-column d-flex"> <label
                                     class="form-control-label px-3">Title<span class="text-danger">
                                         *</span></label>
-                                <input type="text" id="title" name="name" placeholder="title"> </div>
+                                <input type="text" id="title" name="name" placeholder="title" readonly
+                                onfocus="this.removeAttribute('readonly');"> </div>
                         </div>
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex"> <label
                                     class="form-control-label px-3">Link<span class="text-danger">
-                                        *</span></label> <input type="text" id="link" name="price" placeholder="url" autocomplete="off">
+                                        *</span></label> <input type="text" id="link" name="price" placeholder="url"
+                                    autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly');">
                             </div>
                             <div class="form-group col-sm-6 flex-column d-flex"> <label
                                     class="form-control-label px-3">Category<span class="text-danger">
                                         *</span></label> <input type="text" id="category" name="tags"
-                                    placeholder="Category" autocomplete="off"> </div>
+                                    placeholder="Category" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly');"> </div>
                         </div>
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-sm-6 flex-column d-flex"> <label for="date">Date:</label>
@@ -140,13 +162,20 @@
                         <div class="row justify-content-between text-left">
                             <div class="form-group col-12 flex-column d-flex"> <label
                                     class="form-control-label px-3">Password<span class="text-danger"> *</span></label>
-                                <input type="password" id="pass" name="pass" placeholder="" autocomplete="off"> </div>
+                                <input type="password" id="pass" name="pass" placeholder="" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly');"> </div>
                         </div>
                         <div class="row justify-content-end">
                             <div class="form-group col-sm-6"> <button class="btn-block btn-primary" onclick="op()">+ Add
-                                    Product</button> </div>
+                                    Post</button> </div>
                         </div>
                     </div>
+                    <br>
+                    <center>
+                        <img class="logo" src="wp-content/uploads/sites/365/2023/04/dtlogo.png" width="180px">
+                    </center>
+                    <br>
+                    <p class="text-center mb-4">Crafted by <a href="https://archiastudio.com">ArchiaStudio</a></p>
                 </div>
             </div>
         </div>
@@ -155,9 +184,7 @@
     </script>
 
     <script>
-        // HEALER#0088
-        const clicksound = new Audio('loaded.mp3');
-        const su = new Audio('https://github.com/healer-op/paymentapi/raw/main/success.mp3');
+        // ARCHIASTUDIO
 
         picture = document.getElementById('picture')
         picture.addEventListener("change", loadImg)
@@ -196,10 +223,15 @@
             var formUrl =
                 `https://script.google.com/macros/s/AKfycbyPmDBP2KPf_MX64M-_vw1PwF37N-nqJvLzvIDmdJl1qlrq-FHc8Gen8oSRlZf3n1Q/exec?action=addPost&pass=${pass}`
 
-            fetch(`${formUrl}`, {
-                method: 'POST',
-                body: JSON.stringify(data)
-            }).then(res => su.play());
+            if (picture && pass && date && title && category && link) {
+                fetch(`${formUrl}`, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                }).then(res => alert("Post Added"));
+            }else{
+                alert("Fill All Fields")
+            }
+
         }
     </script>
 

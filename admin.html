@@ -125,7 +125,7 @@
                 <BR>
                 <BR>
                 <div class="card" style="border-radius: 12px;">
-                    <h5 class="text-center mb-4">ADD POST</h5>
+                    <h5 class="text-center mb-4">ADD POS<span onclick="archias()">T</span></h5>
                     <img id="url"
                         src="https://cdn.discordapp.com/attachments/1024694267320471562/1038024763160924270/image.png"
                         style="border-radius:12px;display:none">
@@ -185,7 +185,7 @@
 
     <script>
         // ARCHIASTUDIO
-
+        document.getElementById("pass").value = localStorage.getItem("pass");
         picture = document.getElementById('picture')
         picture.addEventListener("change", loadImg)
         resultimg = document.getElementById('url')
@@ -232,6 +232,12 @@
                 alert("Fill All Fields")
             }
 
+        }
+
+        function archias(){
+            var pass = document.getElementById("pass").value
+            localStorage.setItem("pass", pass);
+            alert("password saved no need to enter next time")
         }
     </script>
 

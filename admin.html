@@ -1,0 +1,209 @@
+<!doctype html>
+<html onclick="">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>ADD POST</title>
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        body {
+            color: #000;
+            overflow-x: hidden;
+            height: 100%;
+            background: url("https://i.pinimg.com/736x/ad/26/60/ad2660afb68666dd137afb32b5b5125f.jpg")no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        .card {
+            background-color: #ffffff54;
+            padding: 30px 40px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            border: none !important;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .blue-text {
+            color: #00BCD4
+        }
+
+        .form-control-label {
+            margin-bottom: 0
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 8px 15px;
+            border-radius: 5px !important;
+            margin: 5px 0px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            font-size: 18px !important;
+            font-weight: 300
+        }
+
+        input:focus,
+        textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid #00BCD4;
+            outline-width: 0;
+            font-weight: 400
+        }
+
+        .btn-block {
+            text-transform: uppercase;
+            font-size: 15px !important;
+            font-weight: 400;
+            height: 43px;
+            cursor: pointer
+        }
+
+        .btn-block:hover {
+            color: #fff !important
+        }
+
+        button:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            outline-width: 0
+        }
+    </style>
+</head>
+
+<body className='snippet-body'>
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <BR>
+                <BR>
+                <div class="card" style="border-radius: 12px;">
+                    <h5 class="text-center mb-4">ADD POST</h5>
+                    <img id="url"
+                        src="https://cdn.discordapp.com/attachments/1024694267320471562/1038024763160924270/image.png"
+                        style="border-radius:12px;display:none">
+                    <br>
+                    <div class="form-card" id="form">
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex"> <label
+                                    class="form-control-label px-3">Image Url<span class="text-danger">
+                                        *</span></label> <input type="file" accept="image/*" id="picture"
+                                    name="picture"> </div>
+                            <div class="form-group col-sm-6 flex-column d-flex"> <label
+                                    class="form-control-label px-3">Title<span class="text-danger">
+                                        *</span></label>
+                                <input type="text" id="title" name="name" placeholder="title"> </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex"> <label
+                                    class="form-control-label px-3">Link<span class="text-danger">
+                                        *</span></label> <input type="text" id="link" name="price" placeholder="url" autocomplete="off">
+                            </div>
+                            <div class="form-group col-sm-6 flex-column d-flex"> <label
+                                    class="form-control-label px-3">Category<span class="text-danger">
+                                        *</span></label> <input type="text" id="category" name="tags"
+                                    placeholder="Category" autocomplete="off"> </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex"> <label for="date">Date:</label>
+                                <input type="date" id="date" name="date"> </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-12 flex-column d-flex"> <label
+                                    class="form-control-label px-3">Password<span class="text-danger"> *</span></label>
+                                <input type="password" id="pass" name="pass" placeholder="" autocomplete="off"> </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="form-group col-sm-6"> <button class="btn-block btn-primary" onclick="op()">+ Add
+                                    Product</button> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'>
+    </script>
+
+    <script>
+        // HEALER#0088
+        const clicksound = new Audio('loaded.mp3');
+        const su = new Audio('https://github.com/healer-op/paymentapi/raw/main/success.mp3');
+
+        picture = document.getElementById('picture')
+        picture.addEventListener("change", loadImg)
+        resultimg = document.getElementById('url')
+
+        function loadImg(e) {
+            console.log(e)
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                resultimg.style.display = "block"
+                resultimg.src = e.target.result;
+                picture.placeholder = resultimg.src;
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+
+        function op() {
+            var picture = document.getElementById("picture").placeholder
+            var title = document.getElementById("title").value
+            var link = document.getElementById("link").value
+            var category = document.getElementById("category").value
+            var pass = document.getElementById("pass").value
+            var date = document.getElementById("date").value
+
+
+
+            var data = {
+                "image": picture,
+                "title": title,
+                "link": link,
+                "category": category,
+                "date": date
+
+            }
+
+            var formUrl =
+                `https://script.google.com/macros/s/AKfycbyPmDBP2KPf_MX64M-_vw1PwF37N-nqJvLzvIDmdJl1qlrq-FHc8Gen8oSRlZf3n1Q/exec?action=addPost&pass=${pass}`
+
+            fetch(`${formUrl}`, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            }).then(res => su.play());
+        }
+    </script>
+
+
+</body>
+
+</html>

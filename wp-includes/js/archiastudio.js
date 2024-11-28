@@ -30,7 +30,7 @@ async function archia() {
 		</h3>
 		<div class="jkit-post-meta">
 			<div class="jkit-meta-author icon-position-before"><span class="by">by </span><a
-					href="">YashPal</a></div>
+					href="">DT.YashPal</a></div>
 			<div class="jkit-meta-date icon-position-before">${new Date(data[i].date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
 		</div>
 		<div class="jkit-post-meta-bottom">

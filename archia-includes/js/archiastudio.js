@@ -5,6 +5,7 @@ async function archia() {
 	try {
 		let data = await (await fetch(`${apiLink}`)).json()
 		data = data.slice(-4)
+		data = data.reverse();
 
 		const blog_html = data.map((f, i) => {
 			return `

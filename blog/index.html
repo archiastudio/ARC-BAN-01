@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTYashpal Blog</title>
+  <link rel="icon" href="https://dtyashpal.com/archia-content/uploads/sites/365/2023/04/favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="https://dtyashpal.com/archia-content/uploads/sites/365/2023/04/favicon.png">
+  <link rel="stylesheet" href="https://archiastudio.com/warehouse/css/warehouse.css">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KX4EKGY3VC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KX4EKGY3VC');
+  </script>
+
+  <style>
+    body {
+      font-family: Causten-Bold, sans-serif;
+      background: #fff;
+      color: #111;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    #blog-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      width: 90%;
+      margin: 3rem auto;
+    }
+
+    .post-card {
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+
+    .post-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .post-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .post-content {
+      padding: 1.2rem;
+    }
+
+    .post-content h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .post-content p {
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+
+    a.post-link {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Skeleton loader */
+    .skeleton-card {
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .skeleton-img,
+    .skeleton-text {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    .skeleton-img {
+      width: 100%;
+      height: 220px;
+    }
+
+    .skeleton-content {
+      padding: 1.2rem;
+    }
+
+    .skeleton-text {
+      height: 16px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+    }
+
+    .skeleton-text.short { width: 60%; }
+    .skeleton-text.long { width: 90%; }
+
+    #load-trigger {
+      height: 100px;
+    }
+
+    /* Preloader */
+    #preloader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+      transition: opacity 0.4s ease, visibility 0.4s;
+    }
+
+    #preloader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #preloader img {
+      width: 100px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #preloader p {
+      font-family: Causten-Bold, sans-serif;
+      font-size: 1.1rem;
+      color: #111;
+      margin-top: 1rem;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="preloader">
+    <img src="https://dtyashpal.com/archia-content/uploads/sites/365/2023/04/favicon.png" alt="Loading...">
+    <p>Loading DTYashpal Blog...</p>
+  </div>
+
+  <div id="cursor-dot"></div>
+  <div id="cursor-img"></div>
+  <div class="home">
+    <nav>
+            <ul class="nav">
+                <li id="active"><a href="../index.html">Home</a></li>
+                <li><a href="../index.html#dtservices">Services</a></li>
+                <li><a href="../about/index.html">About</a></li>
+                <li><a href="mailto:askme@dtyashpal.com">Email</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=919738981411&text=Hi%20DTYashpal%20%2C%20I%20am%20contacting%20you%20based%20on%20the%20information%20provided%20on%20your%20website." target="_blank">BookMeeting!</a></li>
+        </nav>
+  </div>
+
+  <h1>ArchiaStudio Blog</h1>
+  <div id="blog-list"></div>
+  <div id="load-trigger"></div>
+
+  <script>
+    const blogList = document.getElementById("blog-list");
+    const loadTrigger = document.getElementById("load-trigger");
+    let files = [];
+    let currentIndex = 0;
+    const batchSize = 6;
+    let loading = false;
+
+    // Skeleton loader generator
+    function addSkeletonLoaders(count = 6) {
+      for (let i = 0; i < count; i++) {
+        const skeleton = document.createElement("div");
+        skeleton.className = "skeleton-card";
+        skeleton.innerHTML = `
+          <div class="skeleton-img"></div>
+          <div class="skeleton-content">
+            <div class="skeleton-text short"></div>
+            <div class="skeleton-text long"></div>
+          </div>
+        `;
+        blogList.appendChild(skeleton);
+      }
+    }
+
+    function removeSkeletons() {
+      document.querySelectorAll(".skeleton-card").forEach(el => el.remove());
+    }
+
+    async function fetchFiles() {
+      const repoUrl = "https://api.github.com/repos/archiastudio/ARC-BAN-01/contents/blog";
+      const res = await fetch(repoUrl);
+      const data = await res.json();
+
+      // Sort by last commit date
+      const enriched = await Promise.all(
+        data
+          .filter(f => f.name.endsWith(".html") && f.name !== "index.html")
+          .map(async file => {
+            const commitRes = await fetch(`https://api.github.com/repos/archiastudio/ARC-BAN-01/commits?path=blog/${file.name}&per_page=1`);
+            const commits = await commitRes.json();
+            return { ...file, date: commits[0]?.commit?.author?.date || "2000-01-01" };
+          })
+      );
+
+      files = enriched.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    async function loadNextBatch() {
+      if (loading || currentIndex >= files.length) return;
+      loading = true;
+      addSkeletonLoaders();
+
+      const slice = files.slice(currentIndex, currentIndex + batchSize);
+      for (const file of slice) {
+        try {
+          const rawUrl = `https://raw.githubusercontent.com/healer-op/arch1a/main/blog/${file.name}`;
+          const response = await fetch(rawUrl);
+          const text = await response.text();
+
+          const titleMatch = text.match(/<title>(.*?)<\/title>/i);
+          const descMatch = text.match(/<meta name="description" content="(.*?)"/i);
+          const ogDescMatch = text.match(/<meta property="og:description" content="(.*?)"/i);
+          const imageMatch = text.match(/url\((https:\/\/[^)]+)\)/i);
+
+          const title = titleMatch ? titleMatch[1] : file.name;
+          const desc = ogDescMatch ? ogDescMatch[1] : (descMatch ? descMatch[1] : "No description available.");
+          const image = imageMatch ? imageMatch[1] : "https://archiastudio.com/warehouse/data/images/default.jpg";
+
+          const card = document.createElement("a");
+          card.href = file.name;
+          card.className = "post-link";
+          card.innerHTML = `
+            <div class="post-card">
+              <img src="${image}" alt="${title}">
+              <div class="post-content">
+                <h2>${title}</h2>
+                <p>${desc}</p>
+              </div>
+            </div>
+          `;
+          blogList.appendChild(card);
+        } catch (err) {
+          console.error("Error loading post:", err);
+        }
+      }
+
+      removeSkeletons();
+      currentIndex += batchSize;
+      loading = false;
+    }
+
+    const observer = new IntersectionObserver(async (entries) => {
+      if (entries[0].isIntersecting && !loading) {
+        await loadNextBatch();
+      }
+    }, { threshold: 1.0 });
+
+    async function init() {
+      addSkeletonLoaders();
+      await fetchFiles();
+      removeSkeletons();
+      await loadNextBatch();
+      observer.observe(loadTrigger);
+      document.getElementById("preloader").classList.add("fade-out");
+    }
+
+    window.addEventListener("load", () => {
+      init().catch(err => {
+        console.error("Error initializing blog:", err);
+        blogList.innerHTML = "<p style='text-align:center'>Failed to load posts 😢</p>";
+      });
+    });
+  </script>
+</body>
+</html>

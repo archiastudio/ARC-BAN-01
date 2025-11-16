@@ -253,7 +253,7 @@
       const slice = files.slice(currentIndex, currentIndex + batchSize);
       for (const file of slice) {
         try {
-          const rawUrl = `https://raw.githubusercontent.com/healer-op/arch1a/main/blog/${file.name}`;
+          const rawUrl = `https://raw.githubusercontent.comarchiastudio/ARC-BAN-01/main/blog/${file.name}`;
           const response = await fetch(rawUrl);
           const text = await response.text();
 

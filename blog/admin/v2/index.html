@@ -239,7 +239,7 @@ body {
   const PASSWORD = "ZHR5YXNocGFsQGFyY2hpYSMzMjE=";
   const UNSPLASH_KEY = "P0wLQEty9GltY1gkYLlhO-NyvjNvdeuuk575NiOdI-g";
   const PEXELS_KEY = "4O1PQ5vtcgDznvbLjx4v7PrUooCaWC4zFci4ghhRkAVxDUvY7T1kujoV";
-  const API_URL = "https://api.archiastudio.com/api/getdetails/ArchiaAi-Blog-key-sg89ay4n";
+  const API_URL = "https://api.archiastudio.com/api/getdetails/ArchiaAi-Blog-key-ydsmhgrj";
 
   // 🔊 Sound Effects (royalty-free)
   const soundSuccess = new Audio("https://archiastudio.com/warehouse/data/sounds/success.mp3");
@@ -283,6 +283,7 @@ body {
 
       const currentHost = window.location.hostname.replace(/^www\./, "");
       const apiHost = new URL(data.website).hostname.replace(/^www\./, "");
+      console.log(apiHost)
       if (currentHost !== apiHost) {
         soundError.currentTime = 0;
         soundError.play().catch(() => {});

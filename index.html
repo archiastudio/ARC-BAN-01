@@ -1780,6 +1780,256 @@
 					</div>
 				</div>
 			</section>
+			<section class="blog-gallery">
+				<style>
+/* =========================================
+   BLOG MARQUEE SECTION (FULLY SCOPED)
+========================================= */
+
+.blog-gallery {
+  width: 100%;
+  margin: 4rem 0;
+}
+
+/* -------- Marquee Wrapper -------- */
+.blog-gallery .marquee {
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+/* -------- Moving Track -------- */
+.blog-gallery .marquee-content {
+  display: flex;
+  gap: 2rem;
+  animation: blog-marquee 30s linear infinite;
+}
+
+/* -------- Blog Card -------- */
+.blog-gallery .blog-card {
+  width: 30rem;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.blog-gallery .blog-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.22);
+}
+
+/* -------- Blog Image -------- */
+.blog-gallery .blog-card img {
+  width: 100%;
+  height: 17.5rem;
+  object-fit: cover;
+  display: block;
+}
+
+/* -------- Card Content -------- */
+.blog-gallery .blog-card .content {
+  padding: 1rem 1.1rem 1.2rem;
+  min-height: 7rem;
+}
+
+/* -------- Blog Title (2 lines + …) -------- */
+.blog-gallery .blog-card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.45rem;
+  line-height: 1.4;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* ← trim here */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* -------- Blog Description (3 lines) -------- */
+.blog-gallery .blog-card p {
+  font-size: 0.9rem;
+  opacity: 0.75;
+  line-height: 1.45;
+  margin: 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;       /* ← description visible */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* -------- Marquee Animation -------- */
+@keyframes blog-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* =========================================
+   MOBILE OPTIMIZATION
+========================================= */
+@media (max-width: 768px) {
+  .blog-gallery .blog-card {
+    width: 16rem;
+  }
+
+  .blog-gallery .blog-card img {
+    height: 10rem;
+  }
+
+  .blog-gallery .blog-card h3 {
+    font-size: 1rem;
+  }
+
+  .blog-gallery .blog-card p {
+    font-size: 0.85rem;
+  }
+}
+				</style>
+			  	<center>
+			    	<div class="heading-section-title display-inline-block">
+			      	<h2 class="heading-title">Latest Blogs</h2>
+			    	</div>
+			  	</center>
+		  <br>
+			<br>
+			  	<div class="marquee">
+					<br>
+			<br>
+			    	<div class="marquee-content" id="blogMarquee">
+			      		<!-- Blogs injected here -->
+			    	</div>
+					<br>
+			<br>
+						<br>
+			<br>
+			  	</div>
+				<script>
+const REPO = "archiastudio/ARC-BAN-01";
+const BASE_PATH = "blog";
+const RAW_BASE = "https://raw.githubusercontent.com/" + REPO + "/main/";
+
+/* ===== CACHE CONFIG ===== */
+const CACHE_KEY = "blog_marquee_cache_v1";
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+
+/* ===== HELPERS ===== */
+function getCache() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (!cached) return null;
+
+    if (Date.now() - cached.time > CACHE_TTL) {
+      localStorage.removeItem(CACHE_KEY);
+      return null;
+    }
+    return cached.html;
+  } catch {
+    return null;
+  }
+}
+
+function setCache(html) {
+  localStorage.setItem(
+    CACHE_KEY,
+    JSON.stringify({
+      time: Date.now(),
+      html
+    })
+  );
+}
+
+async function fetchFolders(path) {
+  const res = await fetch(
+    `https://api.github.com/repos/${REPO}/contents/${path}`
+  );
+  return res.json();
+}
+
+function extractMeta(html) {
+  const get = (regex) => {
+    const match = html.match(regex);
+    return match ? match[1].trim() : "";
+  };
+
+  return {
+    title: get(/<title>(.*?)<\/title>/is),
+    desc:
+      get(/<meta\s+name=["']description["']\s+content=["']([^"']+)["']/i) ||
+      get(/<meta\s+property=["']og:description["']\s+content=["']([^"']+)["']/i),
+    image:
+      get(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i)
+  };
+}
+
+/* ===== MAIN ===== */
+async function loadBlogs() {
+  const marquee = document.getElementById("blogMarquee");
+
+  /* 🔥 Use cache if available */
+  const cachedHTML = getCache();
+  if (cachedHTML) {
+    marquee.innerHTML = cachedHTML;
+    return;
+  }
+
+  let htmlOutput = "";
+
+  const years = await fetchFolders(BASE_PATH);
+
+  for (const year of years) {
+    if (year.type !== "dir") continue;
+
+    const months = await fetchFolders(year.path);
+
+    for (const month of months) {
+      if (month.type !== "dir") continue;
+
+      const files = await fetchFolders(month.path);
+
+      for (const file of files) {
+        if (!file.name.endsWith(".html")) continue;
+
+        const rawUrl = RAW_BASE + file.path;
+        const html = await fetch(rawUrl).then(r => r.text());
+        const meta = extractMeta(html);
+
+        if (!meta.title || !meta.image) continue;
+
+        htmlOutput += `
+          <a class="blog-card"
+             href="https://dtyashpal.com/${file.path.replace('blog/', 'blog/')}"
+             target="_blank">
+            <img src="${meta.image}" alt="${meta.title}">
+            <div class="content">
+              <h3>${meta.title}</h3>
+              <p>${meta.desc}</p>
+            </div>
+          </a>
+        `;
+      }
+    }
+  }
+
+  marquee.innerHTML = htmlOutput;
+
+  /* 💾 Save to cache */
+  setCache(htmlOutput);
+}
+
+loadBlogs();
+</script>
+
+			</section>
+
 			<section id="dtservices"
 				class="elementor-section elementor-top-section elementor-element elementor-element-2a5982d elementor-section-boxed elementor-section-height-default elementor-section-height-default"
 				data-id="2a5982d" data-element_type="section"

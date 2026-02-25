@@ -418,7 +418,7 @@ async function loadNextBatch() {
   loading = true;
   addSkeletons();
 
-  const slice = filteredFiles.slice(currentIndex, currentIndex + batchSize);
+  const slice = filteredFiles;
 
   for (const file of slice) {
     try {
@@ -454,7 +454,6 @@ async function loadNextBatch() {
   }
 
   document.querySelectorAll(".skeleton-card").forEach(e => e.remove());
-  currentIndex += batchSize;
   loading = false;
 }
 
